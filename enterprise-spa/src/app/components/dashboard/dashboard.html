@@ -1,0 +1,260 @@
+<div class="app-shell">
+  <main class="main">
+    <header class="topbar">
+      <div class="page-title">
+        <h2>Gestão de Empresas e Fornecedores</h2>
+        <p>Controle cadastros, vínculos e validações de forma centralizada.</p>
+      </div>
+    </header>
+
+    <section class="grid stats-grid">
+      <article class="stat-card">
+        <p class="stat-label">Empresas</p>
+        <strong class="stat-value">{{ companies().length }}</strong>
+        <span class="stat-hint">Ativas!</span>
+      </article>
+      <article class="stat-card">
+        <p class="stat-label">Fornecedores</p>
+        <strong class="stat-value">{{ suppliers().length }}</strong>
+        <span class="stat-hint">Ativos!</span>
+      </article>
+      <article class="stat-card">
+        <p class="stat-label">Fornecedores Menor de idade</p>
+        <strong class="stat-value">{{ getSuppliersWithAge }}</strong>
+
+      </article>
+      <article class="stat-card">
+        <p class="stat-label">Fornecedores CPF</p>
+        <strong class="stat-value">{{ suppliers().filter(s => s.documentType === 'CPF').length }}</strong>
+      </article>
+    </section>
+
+    <section class="grid content-grid">
+      <section class="filters">
+        <div class="filters-actions">
+          <div class="search-box">
+            <span>⌕</span>
+            <input type="text" placeholder="Buscar por nome, CPF ou CNPJ..." />
+          </div>
+          <!-- <button class="btn btn-primary">+ Novo cadastro</button> -->
+        </div>
+      </section>
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>Empresas</h3>
+            <p>Listagem com filtros das Empresas</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>CNPJ</th>
+                <th>CEP</th>
+                <th>UF</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            @if (companies().length > 0) {
+              <tbody>
+                @for (item of companies(); track $index) {
+                  <tr>
+                    <td>
+                      <div class="entity">
+                        <div class="avatar">J</div>
+                        <div>
+                          <strong>{{ item.fantasyName }}</strong>
+                          <span>{{ item.id }}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ item.cnpj }}</td>
+                    <td>{{ item.zipCode }}</td>
+                    <td>{{ item.state }}</td>
+                    <td>
+                      <div class="actions">
+                        <button class="icon-btn">✎</button>
+                        <button class="icon-btn" (click)="deleteCompany(item.id)">🗑</button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            }
+          </table>
+        </div>
+      </div>
+
+      <section class="filters">
+        <div class="filters-actions">
+          <div class="search-box">
+            <span>⌕</span>
+            <input type="text" placeholder="Buscar por nome, CPF ou CNPJ..." />
+          </div>
+          <!-- <button class="btn btn-primary">+ Novo cadastro</button> -->
+        </div>
+      </section>
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h3>Fornecedores recentes</h3>
+            <p>Listagem com filtros por nome e CPF/CNPJ.</p>
+          </div>
+
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fornecedor</th>
+                <th>Documento</th>
+                <th>Tipo</th>
+                <th>UF</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of suppliers(); track $index) {
+                <tr>
+                  <td>
+                    <div class="entity">
+                      <div class="avatar">J</div>
+                      <div>
+                        <strong>{{ item.name }}</strong>
+                        <span>{{ item.email }}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{ item.document }}</td>
+                  <td><span class="badge badge-blue" [ngClass]="{'badge-blue': item.documentType === 'CPF', 'badge-green': item.documentType === 'CNPJ'}">{{ item.documentType }}</span></td>
+                  <td>{{ item.state }}</td>
+                  <td> {{ item.city }}</td>
+                  <td>
+                    <div class="actions">
+                      <button class="icon-btn">✎</button>
+                      <button class="icon-btn" (click)="deleteSupplier(item.id)">🗑</button>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <aside>
+        <div class="panel form-card">
+          <div class="panel-header" style="padding: 0 0 18px; border-bottom: 0;">
+            <div>
+              <h3>Nova empresa</h3>
+            </div>
+          </div>
+
+          <form class="form-section" [formGroup]="form">
+            <div class="field-group">
+              <label>Nome</label>
+              <input type="text" placeholder="Nome da empresa" [formControlName]="'fantasyName'"/>
+            </div>
+
+            <div class="row-2">
+              <div class="field-group">
+                <label>CEP</label>
+                <input type="text" placeholder="00000-000" [formControlName]="'zipCode'" (keydown)="updateStateZipCode(validCEP)"/>
+              </div>
+              <div class="field-group">
+                <label>CNPJ</label>
+                <input type="text" placeholder="000.000.000-00" [formControlName]="'cnpj'"/>
+              </div>
+            </div>
+            <div class="row-2">
+              <div class="field-group">
+                <label>Cidade</label>
+                <input type="text" placeholder="Cidade" [formControlName]="'city'"/>
+              </div>
+              <div class="field-group">
+                <label>Estado</label>
+                <input type="text" placeholder="Estado" [formControlName]="'state'"/>
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <button type="button" class="btn btn-secondary">Cancelar</button>
+              <button type="button" class="btn btn-primary" (click)="saveCompany()">{{ validCEP() ? 'Salvar' : 'Validar CEP' }}</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel form-card">
+          <div class="panel-header" style="padding: 0 0 18px; border-bottom: 0;">
+            <div>
+              <h3>Novo fornecedor</h3>
+              <p>Campos dinâmicos para CPF/CNPJ.</p>
+            </div>
+          </div>
+
+          <form class="form-section" [formGroup]="formSupplier">
+            <div class="row-2">
+              <div class="field-group">
+                <label>Tipo</label>
+                <select [formControlName]="'documentType'">
+                  <option>CPF</option>
+                  <option>CNPJ</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label>Documento</label>
+                <input type="text" placeholder="000.000.000-00" [formControlName]="'document'"/>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label>Nome</label>
+              <input type="text" placeholder="Nome do fornecedor" [formControlName]="'name'"/>
+            </div>
+
+            <div class="field-group">
+              <label>E-mail</label>
+              <input type="email" placeholder="email@dominio.com" [formControlName]="'email'"/>
+            </div>
+
+            <div class="row-2">
+              <div class="field-group">
+                <label>CEP</label>
+                <input type="text" placeholder="00000-000" [formControlName]="'zipCode'" (keydown)="updateStateZipCode(validCEPSupplier)"/>
+              </div>
+              <div class="field-group">
+                <label>RG</label>
+                <input type="text" placeholder="00.000.000-0" [formControlName]="'rg'"/>
+              </div>
+            </div>
+            <div class="row-2">
+              <div class="field-group">
+                <label>Cidade</label>
+                <input type="text" placeholder="Cidade" [formControlName]="'citySupplier'"/>
+              </div>
+              <div class="field-group">
+                <label>Estado</label>
+                <input type="text" placeholder="Estado" [formControlName]="'stateSupplier'"/>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label>Data de nascimento</label>
+              <input type="date" [formControlName]="'birthDate'"/>
+            </div>
+
+            <div class="form-footer">
+              <button type="button" class="btn btn-secondary">Cancelar</button>
+              <button type="button" class="btn btn-primary" (click)="saveSupplier()">{{ validCEPSupplier() ? 'Salvar' : 'Validar CEP' }}</button>
+            </div>
+          </form>
+        </div>
+      </aside>
+    </section>
+  </main>
+</div>
