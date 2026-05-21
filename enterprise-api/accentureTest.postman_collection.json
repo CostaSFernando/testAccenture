@@ -1,0 +1,346 @@
+{
+  "info": {
+    "_postman_id": "c3b174cf-c831-4a27-93bc-7505afde8851",
+    "name": "accentureTest",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "11740180"
+  },
+  "item": [
+    {
+      "name": "Company",
+      "item": [
+        {
+          "name": "Create company",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"cnpj\": \"93.114.340/0001-24\",\r\n    \"fantasyName\": \"Older Gank Enterprise\",\r\n    \"zipCode\": \"04194260\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/companies",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "companies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Companies",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"fantasyName\": \"Older Gank Enterprise Big\",\r\n    \"zipCode\": \"09930-430\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/companies/ccca36d1-9f1d-42a3-9a73-7fd7420161e6",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "companies",
+                "ccca36d1-9f1d-42a3-9a73-7fd7420161e6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List companies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/companies",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "companies"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Company",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/companies/c2af724e-7845-4f81-afaf-5354d163143e",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "companies",
+                "c2af724e-7845-4f81-afaf-5354d163143e"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Company",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/companies/ccca36d1-9f1d-42a3-9a73-7fd7420161e6",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "companies",
+                "ccca36d1-9f1d-42a3-9a73-7fd7420161e6"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Supplier",
+      "item": [
+        {
+          "name": "Create Supplier",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"document\": \"123.456.789-09\",\r\n  \"documentType\": \"CPF\",\r\n  \"name\": \"João da Silva\",\r\n  \"email\": \"joao@email.com\",\r\n  \"zipCode\": \"80010-000\",\r\n  \"rg\": \"12.345.678-9\",\r\n  \"birthDate\": \"2000-05-10\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/suppliers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "suppliers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Supplier",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"João da Silva Pedreira\",\r\n  \"email\": \"joao11133@email.com\",\r\n  \"zipCode\": \"04194260\",\r\n  \"rg\": \"12.345.678-9\",\r\n  \"birthDate\": \"2000-05-10\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/suppliers/5d36e969-fc8a-40a8-a868-48568fa1a021",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "suppliers",
+                "5d36e969-fc8a-40a8-a868-48568fa1a021"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Suppliers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/suppliers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "suppliers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Supplier",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/suppliers/5d36e969-fc8a-40a8-a868-48568fa1a021",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "suppliers",
+                "5d36e969-fc8a-40a8-a868-48568fa1a021"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Suppliers",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/suppliers/1024ec14-c103-4c27-ba13-c5df517760e4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "suppliers",
+                "1024ec14-c103-4c27-ba13-c5df517760e4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Associate",
+      "item": [
+        {
+          "name": "Associate Suppliers",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"supplierId\": \"5d36e969-fc8a-40a8-a868-48568fa1a021\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/companies/c2af724e-7845-4f81-afaf-5354d163143e/suppliers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "companies",
+                "c2af724e-7845-4f81-afaf-5354d163143e",
+                "suppliers"
+              ],
+              "query": [
+                {
+                  "key": "",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Associates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/companies/c2af724e-7845-4f81-afaf-5354d163143e/suppliers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "companies",
+                "c2af724e-7845-4f81-afaf-5354d163143e",
+                "suppliers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Associate Suppliers",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/companies/c2af724e-7845-4f81-afaf-5354d163143e/suppliers/5d36e969-fc8a-40a8-a868-48568fa1a021",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "companies",
+                "c2af724e-7845-4f81-afaf-5354d163143e",
+                "suppliers",
+                "5d36e969-fc8a-40a8-a868-48568fa1a021"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
