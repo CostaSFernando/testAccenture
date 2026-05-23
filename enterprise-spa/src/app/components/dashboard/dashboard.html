@@ -72,7 +72,7 @@
                         </div>
                       </div>
                     </td>
-                    <td>{{ item.cnpj }}</td>
+                    <td>{{ applyCpfOrCnpjMask(item.cnpj, 'CNPJ') }}</td>
                     <td>{{ item.zipCode }}</td>
                     <td>{{ item.state }}</td>
                     <td>
@@ -131,7 +131,7 @@
                       </div>
                     </div>
                   </td>
-                  <td>{{ item.document }}</td>
+                  <td>{{ applyCpfOrCnpjMask(item.document, item.documentType) }}</td>
                   <td><span class="badge badge-blue" [ngClass]="{'badge-blue': item.documentType === 'CPF', 'badge-green': item.documentType === 'CNPJ'}">{{ item.documentType }}</span></td>
                   <td>{{ item.state }}</td>
                   <td> {{ item.city }}</td>

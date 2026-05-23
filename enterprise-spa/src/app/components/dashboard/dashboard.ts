@@ -2,11 +2,13 @@ import { Component, signal, WritableSignal } from '@angular/core';
 import { Company, CompanyData } from '../../services/company';
 import { Supplier, SupplierData } from '../../services/supplier';
 import { NgClass } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 
 import { ModalService } from '../../services/modal.service';
 import { FormCompany } from '../form-company/form-company';
 import { FormSupplier } from '../form-supplier/form-supplier';
+import { AlertService } from '../../services/alert-service';
+import { MaskUtils } from '../../utils/mask.utils';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,12 +30,14 @@ export class Dashboard {
   constructor(
     private companyService: Company,
     private supplierService: Supplier,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
     this.getCompanies();
     this.getSuppliers();
+
   }
 
   filterCompanies(data: string) {
@@ -128,14 +132,27 @@ export class Dashboard {
   }
 
   deleteCompany(id: string) {
-    return this.companyService.deleteCompany(id).subscribe(() => {
-      this.getCompanies();
-    });
+    this.alertService.warning('Tem certeza que deseja excluir esta empresa?', 'Confirmação', 100000, {label: 'Confirmar', callback: () => {
+      this.companyService.deleteCompany(id).subscribe(() => {
+        this.getCompanies();
+      });
+    }});
+
   }
 
   deleteSupplier(id: string) {
-    return this.supplierService.deleteSupplier(id).subscribe(() => {
-      this.getSuppliers();
-    });
+    this.alertService.warning('Tem certeza que deseja excluir este fornecedor?', 'Confirmação', 100000, {label: 'Confirmar', callback: () => {
+      this.supplierService.deleteSupplier(id).subscribe(() => {
+        this.getSuppliers();
+      });
+    }});
+  }
+
+  applyCpfOrCnpjMask(item: string | number, type: 'CPF' | 'CNPJ' | string): string {
+    if (type === 'CPF') {
+      return MaskUtils.cpf(String(item));
+    }
+    return MaskUtils.cnpj(String(item));
+
   }
 }

@@ -5,6 +5,7 @@ import { Supplier, SupplierData } from '../../services/supplier';
 import { MaskUtils } from '../../utils/mask.utils';
 import { ModalRef } from '../modal/modal-ref';
 import { MODAL_DATA, MODAL_REF } from '../modal/modal';
+import { AlertService } from '../../services/alert-service';
 
 interface SupplierFormModalData {
   mode: 'create' | 'edit';
@@ -33,6 +34,7 @@ export class FormSupplier {
     private formBuilder: FormBuilder,
     private cepService: Cep,
     private supplierService: Supplier,
+    private alert: AlertService,
   ) {
     this.createForm();
   }
@@ -72,9 +74,10 @@ export class FormSupplier {
       this.supplierService.updateSupplier(this.data.supplier.id, this.formSupplier.value).subscribe({
         next: (updatedSupplier) => {
           this.modalRef.close({ success: true });
+          this.alert.success('Fornecedor atualizado com sucesso!');
         },
         error: (error) => {
-          console.error('Erro ao atualizar fornecedor:', error);
+          this.alert.error('Erro ao atualizar fornecedor');
         }
       });
       return;
@@ -87,11 +90,10 @@ export class FormSupplier {
             citySupplier: data.city,
             stateSupplier: data.state
           });
-          console.log('CEP válido:', data);
         },
         error: (error) => {
           this.validCEP.set(false);
-          console.error('Erro ao validar CEP:', error);
+          this.alert.error('CEP inválido. Por favor, verifique e tente novamente.');
         }
       });
 
@@ -112,6 +114,7 @@ export class FormSupplier {
       }
     ).subscribe(res => {
       this.modalRef.close({ success: true });
+      this.alert.success('Fornecedor criado com sucesso!');
     });
   }
 

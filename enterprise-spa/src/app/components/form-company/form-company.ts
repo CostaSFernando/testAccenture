@@ -8,6 +8,7 @@ import { ModalRef } from '../modal/modal-ref';
 import { Supplier, SupplierData } from '../../services/supplier';
 import { disabled } from '@angular/forms/signals';
 import { map, of, switchMap } from 'rxjs';
+import { AlertService } from '../../services/alert-service';
 
 interface CompanyFormModalData {
   mode: 'create' | 'edit';
@@ -40,6 +41,7 @@ export class FormCompany {
     private companyService: Company,
     private supplierService: Supplier,
     private cepService: Cep,
+    private alert: AlertService
   ) {
     this.createForm();
     this.supplierService.getSuppliers().subscribe({
@@ -84,10 +86,10 @@ export class FormCompany {
     if (this.data.mode === 'edit' && this.data.company?.id && this.validCEP() && this.form.valid) {
       this.companyService.associateSuppliers(this.data.company.id, this.selectedSuppliersIds()).subscribe({
         next: (res) => {
-          console.log('Fornecedores associados com sucesso');
+          this.alert.success('Fornecedores associados com sucesso');
         },
         error: (error) => {
-          console.error('Erro ao associar fornecedores:', error);
+          this.alert.error('Erro ao associar fornecedores');
         }
       });
 
@@ -96,7 +98,7 @@ export class FormCompany {
           this.modalRef.close({ success: true });
         },
         error: (error) => {
-          console.error('Erro ao atualizar empresa:', error);
+          this.alert.error('Erro ao atualizar empresa');
         }
       });
       return;
@@ -113,6 +115,7 @@ export class FormCompany {
         },
         error: (error) => {
           this.validCEP.set(false);
+          this.alert.error('CEP inválido. Por favor, verifique e tente novamente.');
         }
       });
 
@@ -136,6 +139,7 @@ export class FormCompany {
       })
     ).subscribe(res => {
       this.modalRef.close({ success: true });
+      this.alert.success('Empresa criada com sucesso');
     })
   }
 
