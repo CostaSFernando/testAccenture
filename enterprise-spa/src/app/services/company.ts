@@ -32,6 +32,10 @@ export class Company {
     return this.http.post<CompanyData>('http://localhost:8080/companies', company);
   }
 
+  updateCompany(id: string, company: CreateCompanyData) {
+    return this.http.put<CompanyData>(`http://localhost:8080/companies/${id}`, company);
+  }
+
   deleteCompany(id: string) {
     return this.http.delete(`http://localhost:8080/companies/${id}`);
   }

@@ -45,6 +45,7 @@
             <h3>Empresas</h3>
             <p>Listagem com filtros das Empresas</p>
           </div>
+          <button class="btn btn-primary" (click)="openCompanyModal()">+ Nova empresa</button>
         </div>
 
         <div class="table-wrap">
@@ -76,7 +77,7 @@
                     <td>{{ item.state }}</td>
                     <td>
                       <div class="actions">
-                        <button class="icon-btn">✎</button>
+                        <button class="icon-btn" (click)="editCompany(item)">✎</button>
                         <button class="icon-btn" (click)="deleteCompany(item.id)">🗑</button>
                       </div>
                     </td>
@@ -104,6 +105,7 @@
             <p>Listagem com filtros por nome e CPF/CNPJ.</p>
           </div>
 
+          <button class="btn btn-primary" (click)="openSupplierModal()">+ Novo fornecedor</button>
         </div>
 
         <div class="table-wrap">
@@ -136,7 +138,7 @@
                   <td> {{ item.city }}</td>
                   <td>
                     <div class="actions">
-                      <button class="icon-btn">✎</button>
+                      <button class="icon-btn" (click)="editSupplier(item)">✎</button>
                       <button class="icon-btn" (click)="deleteSupplier(item.id)">🗑</button>
                     </div>
                   </td>
@@ -146,115 +148,6 @@
           </table>
         </div>
       </div>
-
-      <aside>
-        <div class="panel form-card">
-          <div class="panel-header" style="padding: 0 0 18px; border-bottom: 0;">
-            <div>
-              <h3>Nova empresa</h3>
-            </div>
-          </div>
-
-          <form class="form-section" [formGroup]="form">
-            <div class="field-group">
-              <label>Nome</label>
-              <input type="text" placeholder="Nome da empresa" [formControlName]="'fantasyName'"/>
-            </div>
-
-            <div class="row-2">
-              <div class="field-group">
-                <label>CEP</label>
-                <input type="text" placeholder="00000-000" [formControlName]="'zipCode'" (keydown)="updateStateZipCode(validCEP)"/>
-              </div>
-              <div class="field-group">
-                <label>CNPJ</label>
-                <input type="text" placeholder="000.000.000-00" [formControlName]="'cnpj'"/>
-              </div>
-            </div>
-            <div class="row-2">
-              <div class="field-group">
-                <label>Cidade</label>
-                <input type="text" placeholder="Cidade" [formControlName]="'city'"/>
-              </div>
-              <div class="field-group">
-                <label>Estado</label>
-                <input type="text" placeholder="Estado" [formControlName]="'state'"/>
-              </div>
-            </div>
-
-            <div class="form-footer">
-              <button type="button" class="btn btn-secondary">Cancelar</button>
-              <button type="button" class="btn btn-primary" (click)="saveCompany()">{{ validCEP() ? 'Salvar' : 'Validar CEP' }}</button>
-            </div>
-          </form>
-        </div>
-
-        <div class="panel form-card">
-          <div class="panel-header" style="padding: 0 0 18px; border-bottom: 0;">
-            <div>
-              <h3>Novo fornecedor</h3>
-              <p>Campos dinâmicos para CPF/CNPJ.</p>
-            </div>
-          </div>
-
-          <form class="form-section" [formGroup]="formSupplier">
-            <div class="row-2">
-              <div class="field-group">
-                <label>Tipo</label>
-                <select [formControlName]="'documentType'">
-                  <option>CPF</option>
-                  <option>CNPJ</option>
-                </select>
-              </div>
-              <div class="field-group">
-                <label>Documento</label>
-                <input type="text" placeholder="000.000.000-00" [formControlName]="'document'"/>
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>Nome</label>
-              <input type="text" placeholder="Nome do fornecedor" [formControlName]="'name'"/>
-            </div>
-
-            <div class="field-group">
-              <label>E-mail</label>
-              <input type="email" placeholder="email@dominio.com" [formControlName]="'email'"/>
-            </div>
-
-            <div class="row-2">
-              <div class="field-group">
-                <label>CEP</label>
-                <input type="text" placeholder="00000-000" [formControlName]="'zipCode'" (keydown)="updateStateZipCode(validCEPSupplier)"/>
-              </div>
-              <div class="field-group">
-                <label>RG</label>
-                <input type="text" placeholder="00.000.000-0" [formControlName]="'rg'"/>
-              </div>
-            </div>
-            <div class="row-2">
-              <div class="field-group">
-                <label>Cidade</label>
-                <input type="text" placeholder="Cidade" [formControlName]="'citySupplier'"/>
-              </div>
-              <div class="field-group">
-                <label>Estado</label>
-                <input type="text" placeholder="Estado" [formControlName]="'stateSupplier'"/>
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>Data de nascimento</label>
-              <input type="date" [formControlName]="'birthDate'"/>
-            </div>
-
-            <div class="form-footer">
-              <button type="button" class="btn btn-secondary">Cancelar</button>
-              <button type="button" class="btn btn-primary" (click)="saveSupplier()">{{ validCEPSupplier() ? 'Salvar' : 'Validar CEP' }}</button>
-            </div>
-          </form>
-        </div>
-      </aside>
     </section>
   </main>
 </div>

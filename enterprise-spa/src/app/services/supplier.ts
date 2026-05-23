@@ -21,6 +21,8 @@ export interface CreateSupplierData {
   email: string;
   zipCode: string;
   rg: string;
+  city: string;
+  state: string;
   birthDate: Date;
 }
 
@@ -38,6 +40,10 @@ export class Supplier {
 
   createSupplier(supplier: CreateSupplierData) {
       return this.http.post<SupplierData>('http://localhost:8080/suppliers', supplier);
+  }
+
+  updateSupplier(id: string, supplier: CreateSupplierData) {
+    return this.http.put<SupplierData>(`http://localhost:8080/suppliers/${id}`, supplier);
   }
 
   deleteSupplier(id: string) {

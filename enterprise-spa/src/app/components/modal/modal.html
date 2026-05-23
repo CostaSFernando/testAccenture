@@ -1,0 +1,13 @@
+@if (component && component()) {
+  <div class="modal-backdrop" (click)="close()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <button class="modal-close-button" type="button" (click)="close()">
+        ×
+      </button>
+
+      <ng-container
+        *ngComponentOutlet="component(); injector: injector || undefined">
+      </ng-container>
+    </div>
+  </div>
+}

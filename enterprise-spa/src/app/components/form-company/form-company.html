@@ -1,0 +1,40 @@
+<div class="panel form-card">
+  <div class="panel-header" style="padding: 0 0 18px; border-bottom: 0;">
+    <div>
+      <h3>Nova empresa</h3>
+    </div>
+  </div>
+
+  <form class="form-section" [formGroup]="form">
+    <div class="field-group">
+      <label>Nome</label>
+      <input type="text" placeholder="Nome da empresa" [formControlName]="'fantasyName'"/>
+    </div>
+
+    <div class="row-2">
+      <div class="field-group">
+        <label>CEP</label>
+        <input type="text" placeholder="00000-000" [formControlName]="'zipCode'" (keyup)="updateStateZipCode(validCEP); applyCepMask(form.controls['zipCode'])"/>
+      </div>
+      <div class="field-group">
+        <label>CNPJ</label>
+        <input type="text" placeholder="000.000.000-00" [formControlName]="'cnpj'" (keyup)="applyCnpjMask(form.controls['cnpj'])"/>
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field-group">
+        <label>Cidade</label>
+        <input type="text" placeholder="Cidade" [formControlName]="'city'"/>
+      </div>
+      <div class="field-group">
+        <label>Estado</label>
+        <input type="text" placeholder="Estado" [formControlName]="'state'"/>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="saveCompany()">{{ validCEP() ? 'Salvar' : 'Validar CEP' }}</button>
+    </div>
+  </form>
+</div>
