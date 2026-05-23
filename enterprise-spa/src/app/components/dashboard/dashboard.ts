@@ -2,7 +2,7 @@ import { Component, signal, WritableSignal } from '@angular/core';
 import { Company, CompanyData } from '../../services/company';
 import { Supplier, SupplierData } from '../../services/supplier';
 import { NgClass } from '@angular/common';
-import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ModalService } from '../../services/modal.service';
 import { FormCompany } from '../form-company/form-company';
@@ -78,14 +78,14 @@ export class Dashboard {
   editCompany(item: CompanyData) {
     const modalRef = this.modalService.open<
       { mode: 'edit'; company: CompanyData },
-      { updated: boolean }
+      { success: boolean }
     >(FormCompany, {
       mode: 'edit',
       company: item,
     });
 
     modalRef.afterClosed$.subscribe((result) => {
-      if (result?.updated) {
+      if (result?.success) {
         this.getCompanies();
       }
     });
@@ -94,14 +94,14 @@ export class Dashboard {
   editSupplier(item: SupplierData) {
     const modalRef = this.modalService.open<
       { mode: 'edit'; supplier: SupplierData },
-      { updated: boolean }
+      { success: boolean }
     >(FormSupplier, {
       mode: 'edit',
       supplier: item,
     });
 
     modalRef.afterClosed$.subscribe((result) => {
-      if (result?.updated) {
+      if (result?.success) {
         this.getSuppliers();
       }
     });

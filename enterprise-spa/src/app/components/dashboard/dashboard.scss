@@ -212,3 +212,33 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .app-shell {
+    .main {
+      padding: 20px;
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .content-grid {
+        .filters {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        aside {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    }
+  }
+}

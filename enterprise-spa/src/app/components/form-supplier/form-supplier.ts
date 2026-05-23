@@ -87,8 +87,8 @@ export class FormSupplier {
         next: (data) => {
           this.validCEP.set(true);
           this.formSupplier.patchValue({
-            citySupplier: data.city,
-            stateSupplier: data.state
+            city: data.city,
+            state: data.state
           });
         },
         error: (error) => {
@@ -107,8 +107,8 @@ export class FormSupplier {
         name: this.formSupplier.get('name')?.value,
         email: this.formSupplier.get('email')?.value,
         zipCode: this.formSupplier.get('zipCode')?.value,
-        city: this.formSupplier.get('citySupplier')?.value,
-        state: this.formSupplier.get('stateSupplier')?.value,
+        city: this.formSupplier.get('city')?.value,
+        state: this.formSupplier.get('state')?.value,
         rg: this.formSupplier.get('rg')?.value,
         birthDate: this.formSupplier.get('birthDate')?.value
       }
