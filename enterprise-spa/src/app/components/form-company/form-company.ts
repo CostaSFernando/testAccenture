@@ -86,7 +86,6 @@ export class FormCompany {
     if (this.data.mode === 'edit' && this.data.company?.id && this.validCEP() && this.form.valid) {
       this.companyService.associateSuppliers(this.data.company.id, this.selectedSuppliersIds()).subscribe({
         next: (res) => {
-          this.alert.success('Fornecedores associados com sucesso');
         },
         error: (error) => {
           this.alert.error('Erro ao associar fornecedores');
@@ -96,6 +95,7 @@ export class FormCompany {
       this.companyService.updateCompany(this.data.company.id, this.form.value).subscribe({
         next: (updatedCompany) => {
           this.modalRef.close({ success: true });
+          this.alert.success('Empresa atualizada com sucesso');
         },
         error: (error) => {
           this.alert.error('Erro ao atualizar empresa');
