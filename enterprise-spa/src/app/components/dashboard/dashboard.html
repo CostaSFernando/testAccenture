@@ -10,12 +10,12 @@
     <section class="grid stats-grid">
       <article class="stat-card">
         <p class="stat-label">Empresas</p>
-        <strong class="stat-value">{{ companies().length }}</strong>
+        <strong class="stat-value">{{ allData.companies.length }}</strong>
         <span class="stat-hint">Ativas!</span>
       </article>
       <article class="stat-card">
         <p class="stat-label">Fornecedores</p>
-        <strong class="stat-value">{{ suppliers().length }}</strong>
+        <strong class="stat-value">{{ allData.suppliers.length }}</strong>
         <span class="stat-hint">Ativos!</span>
       </article>
       <article class="stat-card">
@@ -25,7 +25,7 @@
       </article>
       <article class="stat-card">
         <p class="stat-label">Fornecedores CPF</p>
-        <strong class="stat-value">{{ suppliers().filter(s => s.documentType === 'CPF').length }}</strong>
+        <strong class="stat-value">{{ allData.suppliers.filter(s => s.documentType === 'CPF').length }}</strong>
       </article>
     </section>
 
@@ -34,7 +34,7 @@
         <div class="filters-actions">
           <div class="search-box">
             <span>⌕</span>
-            <input type="text" placeholder="Buscar por nome, CPF ou CNPJ..." />
+            <input type="text" placeholder="Buscar por nome ou CNPJ..." (keyup)="filterCompanies($event.target.value)" />
           </div>
           <!-- <button class="btn btn-primary">+ Novo cadastro</button> -->
         </div>
@@ -93,9 +93,8 @@
         <div class="filters-actions">
           <div class="search-box">
             <span>⌕</span>
-            <input type="text" placeholder="Buscar por nome, CPF ou CNPJ..." />
+            <input type="text" placeholder="Buscar por nome, CPF ou CNPJ..." (input)="filterSuppliers($event.target.value)" />
           </div>
-          <!-- <button class="btn btn-primary">+ Novo cadastro</button> -->
         </div>
       </section>
       <div class="panel">

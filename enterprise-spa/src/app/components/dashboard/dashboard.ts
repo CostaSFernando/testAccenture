@@ -2,14 +2,11 @@ import { Component, signal, WritableSignal } from '@angular/core';
 import { Company, CompanyData } from '../../services/company';
 import { Supplier, SupplierData } from '../../services/supplier';
 import { NgClass } from '@angular/common';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { zip } from 'rxjs';
-import { Cep } from '../../services/cep';
-import { MaskUtils } from '../../utils/mask.utils';
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { ModalService } from '../../services/modal.service';
 import { FormCompany } from '../form-company/form-company';
 import { FormSupplier } from '../form-supplier/form-supplier';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +15,13 @@ import { FormSupplier } from '../form-supplier/form-supplier';
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
+  allData: {
+    companies: CompanyData[],
+    suppliers: SupplierData[]
+  } = {
+    companies: [],
+    suppliers: []
+  };
   companies: WritableSignal<CompanyData[]> = signal([]);
   suppliers: WritableSignal<SupplierData[]> = signal([]);
 
@@ -30,6 +34,20 @@ export class Dashboard {
   ngOnInit() {
     this.getCompanies();
     this.getSuppliers();
+  }
+
+  filterCompanies(data: string) {
+    this.companies.set(this.allData.companies.filter(company =>
+      company.fantasyName.toLowerCase().includes(data.toLowerCase()) ||
+      company.cnpj.toString().includes(data)
+    ));
+  }
+
+  filterSuppliers(data: string) {
+    this.suppliers.set(this.allData.suppliers.filter(supplier =>
+      supplier.name.toLowerCase().includes(data.toLowerCase()) ||
+      supplier.document.includes(data)
+    ));
   }
 
   openCompanyModal() {
@@ -98,12 +116,14 @@ export class Dashboard {
   getCompanies() {
     return this.companyService.getCompanies().subscribe((data) => {
       this.companies.set(data);
+      this.allData.companies = data;
     });
   }
 
   getSuppliers() {
     return this.supplierService.getSuppliers().subscribe((data) => {
       this.suppliers.set(data);
+      this.allData.suppliers = data;
     });
   }
 
