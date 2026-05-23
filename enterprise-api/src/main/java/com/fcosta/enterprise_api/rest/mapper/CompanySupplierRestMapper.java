@@ -16,7 +16,7 @@ public class CompanySupplierRestMapper {
     ) {
         return new AssociateSupplierToCompanyCommand(
                 companyId,
-                request.supplierId()
+                request.supplierIds()
         );
     }
 }

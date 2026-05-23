@@ -31,6 +31,17 @@
         <input type="text" placeholder="Estado" [formControlName]="'state'"/>
       </div>
     </div>
+    <div class="field-group">
+      <label>Fornecedores</label>
+      @for (item of suppliers(); track $index) {
+        <label class="checkbox-only">
+          <input type="checkbox" [checked]="!!selectedSuppliersIds().includes(item.id)" (change)="toggleSupplier($event, item.id)" />
+          <span>✓</span>
+          <p>{{ item.name }}</p>
+        </label>
+      }
+    </div>
+
 
     <div class="form-footer">
       <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>

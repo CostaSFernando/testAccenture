@@ -1,12 +1,13 @@
-import { Component, Inject, signal, WritableSignal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, Inject, Signal, signal, WritableSignal } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Company, CompanyData } from '../../services/company';
 import { Cep } from '../../services/cep';
 import { MaskUtils } from '../../utils/mask.utils';
 import { MODAL_DATA, MODAL_REF } from '../modal/modal';
 import { ModalRef } from '../modal/modal-ref';
-import { SupplierData } from '../../services/supplier';
+import { Supplier, SupplierData } from '../../services/supplier';
 import { disabled } from '@angular/forms/signals';
+import { map, of, switchMap } from 'rxjs';
 
 interface CompanyFormModalData {
   mode: 'create' | 'edit';
@@ -29,15 +30,48 @@ export class FormCompany {
 
   form: FormGroup = new FormGroup({});
   validCEP = signal(false);
+  suppliers: WritableSignal<SupplierData[]> = signal([]);
+  selectedSuppliersIds: WritableSignal<string[]> = signal([]);
 
   constructor(
     @Inject(MODAL_DATA) public readonly data: CompanyFormModalData,
     @Inject(MODAL_REF) private readonly modalRef: ModalRef<CompanyFormModalResult>,
     private formBuilder: FormBuilder,
     private companyService: Company,
+    private supplierService: Supplier,
     private cepService: Cep,
   ) {
     this.createForm();
+    this.supplierService.getSuppliers().subscribe({
+      next: (suppliers) => {
+        this.suppliers.set(suppliers);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar fornecedores:', error);
+      }
+    });
+
+    this.companyService.getAssociatedSuppliers(this.data.company?.id || '').subscribe(
+      res => {
+        this.selectedSuppliersIds.set(res.map(supplier => supplier.id));
+        this.form.patchValue({
+          suppliers: this.selectedSuppliersIds(),
+        });
+      }
+    );
+  }
+
+  toggleSupplier(event: any, supplierId: string) {
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      this.selectedSuppliersIds.set([...this.selectedSuppliersIds(), supplierId]);
+    } else {
+      this.selectedSuppliersIds.set(this.selectedSuppliersIds().filter(id => id !== supplierId));
+    }
+    this.form.patchValue({
+      suppliers: this.selectedSuppliersIds
+    });
   }
 
   updateStateZipCode(signal: WritableSignal<boolean>) {
@@ -48,6 +82,15 @@ export class FormCompany {
 
   saveCompany() {
     if (this.data.mode === 'edit' && this.data.company?.id && this.validCEP() && this.form.valid) {
+      this.companyService.associateSuppliers(this.data.company.id, this.selectedSuppliersIds()).subscribe({
+        next: (res) => {
+          console.log('Fornecedores associados com sucesso');
+        },
+        error: (error) => {
+          console.error('Erro ao associar fornecedores:', error);
+        }
+      });
+
       this.companyService.updateCompany(this.data.company.id, this.form.value).subscribe({
         next: (updatedCompany) => {
           this.modalRef.close({ success: true });
@@ -58,6 +101,7 @@ export class FormCompany {
       });
       return;
     }
+
     if (!this.validCEP()) {
       this.cepService.findByZipCode(this.form.get('zipCode')?.value).subscribe({
         next: (data) => {
@@ -81,6 +125,15 @@ export class FormCompany {
         fantasyName: this.form.get('fantasyName')?.value,
         zipCode: this.form.get('zipCode')?.value
       }
+    ).pipe(
+      switchMap((createdCompany) => {
+        if (this.selectedSuppliersIds().length > 0) {
+          return this.companyService.associateSuppliers(createdCompany.id, this.selectedSuppliersIds()).pipe(
+            map(() => createdCompany)
+          );
+        }
+        return of(createdCompany);
+      })
     ).subscribe(res => {
       this.modalRef.close({ success: true });
     })

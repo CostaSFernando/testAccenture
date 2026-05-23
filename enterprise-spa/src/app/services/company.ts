@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SupplierData } from './supplier';
 
 export interface CompanyData {
   id: string
@@ -26,6 +27,14 @@ export class Company {
 
   getCompanies() {
     return this.http.get<CompanyData[]>('http://localhost:8080/companies');
+  }
+
+  getAssociatedSuppliers(companyId: string) {
+    return this.http.get<SupplierData[]>(`http://localhost:8080/companies/${companyId}/suppliers`);
+  }
+
+  associateSuppliers(companyId: string, supplierIds: string[]) {
+    return this.http.post(`http://localhost:8080/companies/${companyId}/suppliers`, { supplierIds });
   }
 
   createCompany(company: CreateCompanyData) {

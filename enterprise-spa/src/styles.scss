@@ -211,6 +211,45 @@ body {
       display: grid;
       gap: 8px;
 
+      .checkbox-only {
+        height: 24px;
+        display: inline-flex;
+        cursor: pointer;
+
+        p {
+          margin-left: 8px;
+          align-self: center;
+        }
+
+        input {
+          display: none;
+        }
+
+        span {
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          border: 2px solid #cbd5e1;
+          border-radius: 7px;
+
+          background: #ffffff;
+          color: #ffffff;
+
+          font-size: 15px;
+          font-weight: 900;
+
+          transition: 180ms ease;
+        }
+
+        input:checked + span {
+          border-color: #7c3aed;
+          background: #7c3aed;
+        }
+      }
+
       label {
         font-size: 13px;
         font-weight: 700;

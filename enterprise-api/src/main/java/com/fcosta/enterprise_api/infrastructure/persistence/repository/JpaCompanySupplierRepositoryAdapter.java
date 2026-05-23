@@ -46,21 +46,69 @@ public class JpaCompanySupplierRepositoryAdapter implements CompanySupplierRepos
     }
 
     @Override
+    public void associateMany(UUID companyId, List<UUID> supplierIds) {
+        if (supplierIds == null || supplierIds.isEmpty()) {
+            return;
+        }
+
+        var company = companyRepository.getReferenceById(companyId);
+
+        var associations = supplierIds.stream()
+                .map(supplierId -> {
+                    var supplier = supplierRepository.getReferenceById(supplierId);
+                    var id = new CompanySupplierId(companyId, supplierId);
+
+                    return CompanySupplierEntity.builder()
+                            .id(id)
+                            .company(company)
+                            .supplier(supplier)
+                            .createdAt(LocalDateTime.now())
+                            .build();
+                })
+                .toList();
+
+        companySupplierRepository.saveAll(associations);
+    }
+
+    @Override
     public void removeAssociation(UUID companyId, UUID supplierId) {
-        companySupplierRepository.deleteByIdCompanyIdAndIdSupplierId(companyId, supplierId);
+        companySupplierRepository.deleteByIdCompanyIdAndIdSupplierId(
+                companyId,
+                supplierId
+        );
+    }
+
+    @Override
+    public void removeAssociations(UUID companyId, List<UUID> supplierIds) {
+        if (supplierIds == null || supplierIds.isEmpty()) {
+            return;
+        }
+
+        companySupplierRepository.deleteByIdCompanyIdAndIdSupplierIdIn(
+                companyId,
+                supplierIds
+        );
     }
 
     @Override
     public boolean existsAssociation(UUID companyId, UUID supplierId) {
-        return companySupplierRepository.existsByIdCompanyIdAndIdSupplierId(companyId, supplierId);
+        return companySupplierRepository.existsByIdCompanyIdAndIdSupplierId(
+                companyId,
+                supplierId
+        );
     }
 
     @Override
     public List<Supplier> findSuppliersByCompanyId(UUID companyId) {
-        return companySupplierRepository.findByIdCompanyId(companyId)
+        return companySupplierRepository.findByCompanyIdWithSupplier(companyId)
                 .stream()
                 .map(CompanySupplierEntity::getSupplier)
                 .map(SupplierPersistenceMapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public List<UUID> findSupplierIdsByCompanyId(UUID companyId) {
+        return companySupplierRepository.findSupplierIdsByCompanyId(companyId);
     }
 }
